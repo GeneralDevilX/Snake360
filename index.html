@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+	<title></title>
+	<head></head>
+	<style>
+		body {
+			background: black;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		canvas {
+			border: 1px solid white;
+		}
+		#scoreText{
+			color : white;
+			position : fixed;
+			bottom : 5px;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		#gameOver{
+			color : yellow;
+			position : fixed;
+			top : 250px;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		button{
+			position : fixed;
+			bottom : 300px;
+			left : 650px;
+			visibility : hidden;
+		}
+		
+	</style>
+	<body>
+		<canvas id="snake" width="1340" height="550">
+			<!-- Insert fallback content here -->
+		</canvas>
+		<h1 id="scoreText">Score : <span id='score'>0</span></h1>
+		<div id="gameOver">
+			<h1>Game Over!</h1>
+			<h2>Press Enter button to try again<h2>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	</body>
+</html>
+<script type="text/javascript">
+	//kelas apple
+	function Apple(){
+		this.x;
+		this.y;
+	}
+	
+	//kelas snake
+	function Snake(){
+		this.x = 0;
+		this.y = 270;
+		this.tubuhMax = 200;
+		this.tubuhSnake = [{x:this.x,y:this.y}];
+		
+		this.move = function(sudut){
+			this.x += Math.cos(sudut*Math.PI/180)*2;
+			this.y += Math.sin(sudut*Math.PI/180)*2;
+		}
+	}
+	
+	//kelas Game
+	function Game(){
+		this.myCanvas = document.getElementById('snake');
+		this.context = this.myCanvas.getContext('2d');
+		this.sudut = 0;
+		
+		var score = 0;
+		this.gameOver = false;
+		this.apel = new Apple();
+		this.ular = new Snake();
+		
+		
+		//method untuk menggambar apel
+		this.drawApple = function(){
+			this.context.lineWidth = 1;
+			this.context.strokeStyle = 'white';
+			this.context.beginPath();
+			this.context.moveTo(this.apel.x+5,this.apel.y+3);
+			this.context.quadraticCurveTo(this.apel.x+10,this.apel.y,this.apel.x+10,this.apel.y+5);
+			this.context.quadraticCurveTo(this.apel.x+8,this.apel.y+10,this.apel.x+5,this.apel.y+8);
+			this.context.quadraticCurveTo(this.apel.x+2,this.apel.y+10,this.apel.x,this.apel.y+5);
+			this.context.quadraticCurveTo(this.apel.x,this.apel.y,this.apel.x+5,this.apel.y+3);
+			this.context.closePath();
+			
+			this.context.fillStyle = 'red';
+			this.context.fill();
+			this.context.moveTo(this.apel.x+5,this.apel.y+3);
+			this.context.lineTo(this.apel.x+5,this.apel.y);
+			this.context.closePath();
+			this.context.stroke();
+		}
+		
+		//method untuk random posisi apel
+		this.randomApple = function(){
+			const width = this.myCanvas.width-10;
+			const height = this.myCanvas.height-10;
+			var randomX = Math.floor(Math.random()*width);
+			var randomY = Math.floor(Math.random()*height);
+			this.moveApple(randomX,randomY);
+			this.drawApple();
+		}
+		
+		//method untuk memindahkan apel
+		this.moveApple = function(x,y){
+			this.apel.x = x;
+			this.apel.y = y;
+		}
+
+		
+		//method untuk menggambar ular
+		this.drawSnake = function(){
+			this.context.lineWidth = 5;
+			this.context.strokeStyle = 'SpringGreen';
+			this.context.fillStyle = 'SpringGreen';
+			for(var i = 0;i< this.ular.tubuhSnake.length-1;i++){
+				if(Math.abs(this.ular.tubuhSnake[i].x - this.ular.tubuhSnake[i+1].x) > 2||
+				   Math.abs(this.ular.tubuhSnake[i].y - this.ular.tubuhSnake[i+1].y) > 2){
+				   i++;
+				}
+				else{
+					this.context.beginPath();
+					this.context.moveTo(this.ular.tubuhSnake[i].x,this.ular.tubuhSnake[i].y);
+					this.context.lineTo(this.ular.tubuhSnake[i+1].x,this.ular.tubuhSnake[i+1].y);
+					this.context.closePath();
+					this.context.stroke();
+				}
+			}
+			
+		}
+		
+		//method untuk menggambar labirin dummy
+		/*
+		this.drawMaze = function(){
+			this.x = 0;
+			this.context.fillStyle = 'yellow';
+			for(var i=0; i< 10;i++){
+				this.context.fillRect(625+this.x,275,5,5);
+				this.x += 5
+			}
+			
+			
+		}
+		*/
+		
+		//method untuk mengarahkan ular ke atas,bawah,kiri,kanan
+		this.moveLeft = function(){
+			this.sudut-=3;
+			if(this.sudut < 0){
+				this.sudut = 360;
+			}
+		}
+		this.moveRight = function(){
+			this.sudut+=3;
+			if(this.sudut > 360){
+				this.sudut = 0;
+			}
+		}
+		
+		
+		//method supaya ular dapat keluar dari sisi lain 
+		this.sampaiUjung = function(){
+			if (this.ular.x < 0) {
+				this.ular.x = this.myCanvas.width;
+			}
+			else if (this.ular.x >= this.myCanvas.width) {
+				this.ular.x = 0;
+			}
+			if (this.ular.y < 0) {
+				this.ular.y = this.myCanvas.height;
+			}
+			else if (this.ular.y >= this.myCanvas.height) {
+				this.ular.y = 0;
+			}
+		}
+	
+		//memulai game
+		this.startGame = function(){
+			this.randomApple();
+			this.drawSnake();
+			this.removeGameOverText();
+			//this.drawMaze();
+		}
+		
+		//cek collision ular dengan apel
+		this.appleCollision = function(){
+			let posisiApelX = this.apel.x;
+			let posisiApelY = this.apel.y;
+			const besarApel = 10;
+			let posisiXUlar = this.ular.tubuhSnake[0].x;
+			let posisiYUlar = this.ular.tubuhSnake[0].y;
+			
+			
+			if(posisiXUlar > posisiApelX && posisiYUlar > posisiApelY &&
+			   posisiXUlar < posisiApelX+besarApel && posisiYUlar < posisiApelY+besarApel){
+					this.appleEaten();
+			}
+		}
+		
+		// ular memakan apel
+		this.appleEaten = function(){
+			this.randomApple();
+			score++;
+			this.ular.tubuhMax++;
+			$('#score').html(score);
+		}
+		
+		//ular menabrak diri sendiri
+		
+		this.snakeCollision = function(){
+			let posisiXUlar = this.ular.tubuhSnake[0].x;
+			let posisiYUlar = this.ular.tubuhSnake[0].y;
+			const besarBoundary = 1;
+			
+			for(var i = 1; i< this.ular.tubuhSnake.length;i++){
+				let bagianTubuhSnakeX = this.ular.tubuhSnake[i].x; 
+				let bagianTubuhSnakeY = this.ular.tubuhSnake[i].y;
+				
+				if(posisiXUlar > bagianTubuhSnakeX-besarBoundary && posisiYUlar > bagianTubuhSnakeY-besarBoundary &&
+				   posisiXUlar < bagianTubuhSnakeX+besarBoundary && posisiYUlar < bagianTubuhSnakeY+besarBoundary ){
+					this.gameOver = true;
+					this.popUpGameOverText();
+				}
+			}	
+		}
+		
+		//untuk menampilkan text gameOver
+		this.popUpGameOverText = function(){
+			let gameOverText = document.getElementById("gameOver");
+			gameOverText.style.display = "block";
+		}
+		
+		//untuk menghilangkan text gameOver
+		this.removeGameOverText = function(){
+			let gameOverText = document.getElementById("gameOver");
+			gameOverText.style.display = "none";
+		}
+		
+		//mendapatkan status gameOver
+		this.getGameOverStatus = function(){
+			return this.gameOver;
+		}
+		
+		
+		//posisi untuk animasi
+		this.animate = function(){
+			if(this.gameOver == true){
+				return;
+			}
+			else{
+				this.context.clearRect(0,0,this.myCanvas.width,this.myCanvas.height);
+				this.ular.move(this.sudut);
+				
+				//this.ular.x = this.ular.x + (Math.cos(this.sudut*Math.PI/180)*2); // bikin method baru di snake
+				//this.ular.y = this.ular.y + (Math.sin(this.sudut*Math.PI/180)*2);
+				
+				this.sampaiUjung();
+				
+				this.temp = {};
+				this.temp['x'] = this.ular.x;
+				this.temp['y'] = this.ular.y;
+			
+				this.ular.tubuhSnake.unshift(this.temp);
+				if(this.ular.tubuhSnake.length > this.ular.tubuhMax){
+					this.ular.tubuhSnake.pop();
+				}
+			
+				this.drawSnake();
+				this.drawApple();
+				//this.drawMaze();
+				this.appleCollision();
+				this.snakeCollision();
+				
+				var that = this;
+				setTimeout(function(){
+					that.animate();
+				},50);
+			}
+		}
+	}
+	
+	$(document).ready(function(){
+		var permainan = new Game();
+		permainan.startGame();
+		
+		//tombol pergerakan ular 
+		document.addEventListener('keydown', function(e) {
+			
+			if (e.keyCode == 37) {
+				permainan.moveLeft();
+			}
+			else if (e.keyCode == 39) {
+				permainan.moveRight();
+			}
+			else if(e.keyCode == 13 && permainan.getGameOverStatus == true){
+				permainan = new Game();
+				permainan.startGame();
+			}
+		});
+		permainan.animate();
+	});
+	
+</script>
