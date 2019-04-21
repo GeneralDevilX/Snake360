@@ -4,6 +4,7 @@ Open Source Snake 360 adalah sebuah permainan di mana pemain mengendalikan ular 
 
 ## Membuat labirin
 Berikut adalah hal yang perlu diperhatikan untuk membuat labirin : 
+* File level dibuat pada folder bernama 'Levels'
 * Labirin dibuat pada file text (.txt)
 * Labirin dibuat dengan dimensi 60 x 60. File text memiliki 60 baris dan setiap barisnya memiliki 60 karakter
 * Karakter '#' merepresentasikan dinding dan karakter '-' merepresentasikan tidak ada dinding
