@@ -520,16 +520,47 @@
 					}
 				});
 		
-				document.addEventListener('touchstart',function(e){
+				
+				var onlongtouch; 
+				var timer;
+				var touchduration = 100; //length of time we want the user to touch before we do something
+
+				window.addEventListener('touchstart',function(e){
+					timer = setInterval(function(){
+						var width = window.innerWidth;
+						var touchX = e.touches[0].clientX;
+						if(touchX > width/2){
+							permainan.moveLeft();
+						}
+						else{
+							permainan.moveRight();
+						}
+					},touchduration); 
+				},false);
+
+				window.addEventListener('touchend',function(){
+					if (timer)
+						clearInterval(timer); // clearTimeout, not cleartimeout..
+				},false);
+				
+				window.oncontextmenu = function(event) {
+					event.preventDefault();
+					event.stopPropagation();
+					return false;
+				};
+				
+				
+				/*window.addEventListener('touchstart',function(e){
 					var width = window.innerWidth;
-					var clickX = e.clientX;
-					if(clickX > width/2){
+					e.preventDefault();
+					var touchX = e.touches[0].clientX;
+					if(touchX > width/2){
 						permainan.moveLeft();
 					}
 					else{
 						permainan.moveRight();
 					}
-				});
+				});*/
 		
 				wait();
 			}
