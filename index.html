@@ -346,21 +346,18 @@
 			return levels;
 		}
 		
-		this.countLevels = function(callback){
-			let level = 0;
-	
-			$.ajax({
-				url: "Levels/",
-				success: function(data){
-					$(data).find("tbody tr a").each(function(i){
-						if(i>4){      
-							level = level+1;
-						}
-					});
-					callback(level);
-				}
+		this.countLevels = function(level){
+			var that = this;  
+			url = "Levels/level"+level+".txt";
+			$.get( url, function() {
+				level+=1;
+				that.countLevels(level);
+			})
+			.fail(function() {
+				level = level-1;
+				that.changeLevel(level);
 			});
-		}
+		}	
 		
 		this.loadMaze = function(callback){
 			let level = $('#level').val();
@@ -388,7 +385,7 @@
 	
 		resize();
 		var permainan = new Game();
-		permainan.countLevels(permainan.changeLevel);
+		permainan.countLevels(1);
 		
 		function resize(){
 			var width = window.innerWidth-50;
@@ -524,7 +521,7 @@
 				});
 		
 				document.addEventListener('touchstart',function(e){
-					var width = $(document).width();
+					var width = window.innerWidth;
 					var clickX = e.clientX;
 					if(clickX > width/2){
 						permainan.moveLeft();
