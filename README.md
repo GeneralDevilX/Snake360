@@ -13,12 +13,12 @@ Open Source Snake 360 adalah sebuah permainan di mana pemain mengendalikan ular 
 ## Cara menambah labirin
 Berikut adalah cara untuk menambah labirin :
 * Fork dan clone repository ini
-* Sinkronkan repository fork yang Anda buat dengan repository aslinya(repository ini). Caranya adalah dengan menuliskan perintah : ```$ git remote add upstream link_repository_ini```
+* Sinkronkan repository fork yang Anda buat dengan repository aslinya(repository ini). Caranya adalah dengan menuliskan perintah : ```$ git remote add upstream link_repository_asli```
 * Buat labirin (aturan pembuatan labirin sudah dijelaskan di bawah)
 * Commit dan push perubahan pada repository yang sudah Anda fork
 * Buat pull request ke repository ini
 
-**Note : gunakan perintah ```$ git pull``` untuk mendapatkan update terbaru untuk mencegah penamaan level yang sama**
+**Note : gunakan perintah ```$ git pull link_repository_asli``` untuk mendapatkan update terbaru untuk mencegah penamaan level yang sama**
 
 ## Membuat labirin
 Berikut adalah hal yang perlu diperhatikan untuk membuat labirin : 
