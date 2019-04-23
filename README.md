@@ -18,7 +18,7 @@ Berikut adalah cara untuk menambah labirin :
 * Commit dan push perubahan pada repository yang sudah Anda fork
 * Buat pull request ke repository ini
 
-**Note : gunakan perintah ```$ git pull``` untuk mendapatkan update terbaru agar dalam untuk mencegah penamaan level yang sama**
+**Note : gunakan perintah ```$ git pull``` untuk mendapatkan update terbaru untuk mencegah penamaan level yang sama**
 
 ## Membuat labirin
 Berikut adalah hal yang perlu diperhatikan untuk membuat labirin : 
