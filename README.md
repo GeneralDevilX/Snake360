@@ -19,6 +19,7 @@ Berikut adalah cara untuk menambah labirin :
 
 ## Membuat labirin
 Berikut adalah hal yang perlu diperhatikan untuk membuat labirin : 
+* File labirin diawali dengan 'level' kemudian diikuti dengan angka. Angka yang digunakan adalah angka dari level terbaru. Misal : bila labirin terakhir adalah "level3.txt", maka labirin baru akan bernama "level4.txt"
 * File level dibuat pada folder bernama 'Levels'
 * Labirin dibuat pada file text (.txt)
 * Labirin dibuat dengan dimensi 60 x 60. File text memiliki 60 baris dan setiap barisnya memiliki 60 karakter
