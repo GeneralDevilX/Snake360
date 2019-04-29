@@ -12,13 +12,14 @@ Open Source Snake 360 adalah sebuah permainan di mana pemain mengendalikan ular 
   
 ## Cara menambah labirin
 Berikut adalah cara untuk menambah labirin :
-* Fork dan clone repository ini
-* Sinkronkan repository fork yang Anda buat dengan repository aslinya(repository ini). Caranya adalah dengan menuliskan perintah : ```$ git remote add upstream link_repository_asli```
-* Buat labirin (aturan pembuatan labirin sudah dijelaskan di bawah)
-* Commit dan push perubahan pada repository yang sudah Anda fork
-* Buat pull request ke repository ini
+1. Fork dan clone repository ini
+2. Sinkronkan repository fork yang Anda buat dengan repository aslinya(repository ini). Caranya adalah dengan menuliskan perintah : ```$ git remote add upstream https://github.com/GeneralDevilX/Snake360/``` kemudian gunakan ```$ git fetch upstream``` untuk mengambil repo asli
+3. Checkout ke branch utama dan merge repo Anda dengan branch upstream yang sudah Anda tambahkan
+4. Buat labirin (aturan pembuatan labirin sudah dijelaskan di bawah)
+5. Commit dan push perubahan pada repository yang sudah Anda fork
+6. Buat pull request ke repository ini
 
-**Note : gunakan perintah ```$ git pull link_repository_asli``` untuk mendapatkan update terbaru untuk mencegah penamaan level yang sama**
+**Note : Untuk point 2 dan 3 harus dilakukan apabila Anda ingin update repo Anda dengan repo ini**
 
 ## Membuat labirin
 Berikut adalah hal yang perlu diperhatikan untuk membuat labirin : 
@@ -27,4 +28,5 @@ Berikut adalah hal yang perlu diperhatikan untuk membuat labirin :
 * Labirin dibuat pada file text (.txt)
 * Labirin dibuat dengan dimensi 60 x 60. File text memiliki 60 baris dan setiap barisnya memiliki 60 karakter
 * Karakter '#' merepresentasikan dinding dan karakter '-' merepresentasikan tidak ada dinding
-* Baris terakhir diisi dengan posisi awal ular yaitu koordinat X ular dan koordinat Y ular yang keduanya dipisahkan oleh spasi (koordinat minimal untuk X dan Y adalah 0 dan koordinat maksimal untuk X dan Y adalah 600)
+* Baris terakhir diisi dengan posisi awal ular yaitu koordinat X ular dan koordinat Y ular yang keduanya dipisahkan oleh spasi (koordinat minimal untuk X dan Y adalah 0 dan koordinat maksimal untuk X dan Y adalah 600). Contoh: apabila posisi ular adalah (100,200) maka Anda harus mengganti karakter ke 10 dari baris ke 20.
+* Tidak boleh ada space kosong di akhir file teks
