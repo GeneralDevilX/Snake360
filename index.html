@@ -99,7 +99,7 @@
 		<h1 id="levelText">Level <span id='levels'>--</span></h1>
 		<div id="gameOver">
 			<p>GAME OVER!</p>
-			<p>Press Enter button to try again</p>
+			<p>Press Enter button or refresh to try again</p>
 			<p>Your final score is : <span id="finalScore">0</span></p>
 		</div>
 		<script src="jquery-3.2.1.min.js"></script>
@@ -145,36 +145,70 @@
 		
 		//method untuk random posisi apel
 		this.randomApple = function(){
-			const width = this.myCanvas.width-this.apel.getBesarApel();
-			const height = this.myCanvas.height-this.apel.getBesarApel();
+			const besarApel = this.apel.getBesarApel();
+			const width = this.myCanvas.width-besarApel;
+			const height = this.myCanvas.height-besarApel;
 			
-			let randomX = Math.floor(Math.random()*width);
-			let randomY = Math.floor(Math.random()*height);
+			let x = Math.floor(Math.random()*width);
+			let y = Math.floor(Math.random()*height);
 			
-			this.moveApple(randomX,randomY);
-			
-			let arrayLayout = this.maze.getMazeLayout();
-			let dindingX = Math.floor(randomX/10);
-			let dindingY = Math.floor(randomY/10);
-		
-			for(var i = 0; i< this.ular.tubuhSnake.length-1;i++){
-				let posisiXUlar = this.ular.tubuhSnake[i].x;
-				let posisiYUlar = this.ular.tubuhSnake[i].y;
-				
-				if(posisiXUlar > randomX && posisiYUlar > randomY &&
-					posisiXUlar < randomX+this.apel.besarApel && posisiYUlar < randomY+this.apel.besarApel){
-						if(arrayLayout[dindingY].charAt(dindingX) == '#'){
-							this.moveApple(randomX,randomY);
-						}
-				}
-				else{
-					break;
-				}
+			this.moveApple(x,y);
+			if(!this.checkAppleCollisionSnake(x,y) && !this.checkAppleCollisionWall(x,y)){
+				this.randomApple();
 			}
-			
-			this.drawingObj.drawApple(this.apel.x,this.apel.y,this.apel.getBesarApel());
+			else{
+				this.drawingObj.drawApple(x,y,besarApel);
+			}
 		}
 		
+		//cek random apel tabrakan dengan snake
+		this.checkAppleCollisionSnake = function(x,y){
+			for(var i =1; i< this.ular.tubuhSnake.length-1;i++){
+				let posisiXUlar = this.ular.tubuhSnake[i].x;
+				let posisiYUlar = this.ular.tubuhSnake[i].y;
+				if(posisiXUlar > x && posisiYUlar > y &&
+						posisiXUlar < x+this.apel.getBesarApel() && posisiYUlar < y+this.apel.getBesarApel()){
+							return false;
+				}	
+				else{
+					return true;
+				}
+			}
+		}
+
+		//cek random apel dengan dinding
+		this.checkAppleCollisionWall = function(x,y){
+			let arrayLayout = this.maze.getMazeLayout();
+			let besarApel = this.apel.getBesarApel();
+
+			let dindingX = Math.floor(x/besarApel);
+			let dindingY = Math.floor(y/besarApel);
+			let dindingX2 = Math.floor((x+besarApel)/besarApel);
+			let dindingY2 = Math.floor(y/besarApel);
+			let dindingX3 = Math.floor(x/besarApel);
+			let dindingY3 = Math.floor((y+besarApel)/besarApel);
+			let dindingX4 = Math.floor((x+besarApel)/besarApel);
+			let dindingY4 = Math.floor((y+besarApel)/besarApel);
+
+			let dindingX5 = Math.floor(x/besarApel);
+			let dindingY5 = Math.floor((y+besarApel/2)/besarApel);
+			let dindingX6 = Math.floor((x+besarApel)/besarApel);
+			let dindingY6 = Math.floor((y+besarApel/2)/besarApel);
+
+			let dindingX7 = Math.floor((x+besarApel/2)/besarApel);
+			let dindingY7 = Math.floor(y/besarApel);
+			let dindingX8 = Math.floor((x+besarApel/2)/besarApel);
+			let dindingY8 = Math.floor((y+besarApel)/besarApel);
+
+			if(arrayLayout[dindingY].charAt(dindingX) == '#' || arrayLayout[dindingY2].charAt(dindingX2) == '#' || 
+					arrayLayout[dindingY3].charAt(dindingX3) == '#' || arrayLayout[dindingY4].charAt(dindingX4) == '#' ||
+					arrayLayout[dindingY5].charAt(dindingX5) == '#' || arrayLayout[dindingY6].charAt(dindingX6) == '#' ||
+					arrayLayout[dindingY7].charAt(dindingX7) == '#' || arrayLayout[dindingY8].charAt(dindingX8) == '#'){
+							return false;
+			}
+			return true;
+		}
+
 		//method untuk memindahkan apel
 		this.moveApple = function(x,y){
 			this.apel.x = x;
@@ -475,7 +509,6 @@
 			if(chosenSpeed != ""){
 				if(chosenSpeed > 0 && chosenSpeed <= 5){
 					document.getElementById("snakeSpeedInvalid").style.visibility = "hidden";
-					console.log("valid");
 					snakeSpeedValid = true;
 				}
 				else{
@@ -507,7 +540,7 @@
 				}
 			
 				//tombol pergerakan ular 
-				document.addEventListener('keydown', function(e) {	
+				document.addEventListener('keydown', function(e) {
 					if (e.keyCode == 37) {
 						permainan.moveLeft();
 					}
@@ -523,7 +556,7 @@
 				
 				var onlongtouch; 
 				var timer;
-				var touchduration = 100; //length of time we want the user to touch before we do something
+				var touchduration = 100;
 
 				window.addEventListener('touchstart',function(e){
 					timer = setInterval(function(){
@@ -540,7 +573,7 @@
 
 				window.addEventListener('touchend',function(){
 					if (timer)
-						clearInterval(timer); // clearTimeout, not cleartimeout..
+						clearInterval(timer);
 				},false);
 				
 				window.oncontextmenu = function(event) {
@@ -548,20 +581,6 @@
 					event.stopPropagation();
 					return false;
 				};
-				
-				
-				/*window.addEventListener('touchstart',function(e){
-					var width = window.innerWidth;
-					e.preventDefault();
-					var touchX = e.touches[0].clientX;
-					if(touchX > width/2){
-						permainan.moveLeft();
-					}
-					else{
-						permainan.moveRight();
-					}
-				});*/
-		
 				wait();
 			}
 		});
