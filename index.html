@@ -152,62 +152,48 @@
 			
 			let x = Math.floor(Math.random()*width);
 			let y = Math.floor(Math.random()*height);
-			
 			this.moveApple(x,y);
-			if(!this.checkAppleCollisionSnake(x,y) && !this.checkAppleCollisionWall(x,y)){
-				this.randomApple();
-			}
-			else{
-				this.drawingObj.drawApple(x,y,besarApel);
-			}
-		}
-		
-		//cek random apel tabrakan dengan snake
-		this.checkAppleCollisionSnake = function(x,y){
-			for(var i =1; i< this.ular.tubuhSnake.length-1;i++){
-				let posisiXUlar = this.ular.tubuhSnake[i].x;
-				let posisiYUlar = this.ular.tubuhSnake[i].y;
-				if(posisiXUlar > x && posisiYUlar > y &&
-						posisiXUlar < x+this.apel.getBesarApel() && posisiYUlar < y+this.apel.getBesarApel()){
-							return false;
-				}	
-				else{
-					return true;
-				}
-			}
-		}
-
-		//cek random apel dengan dinding
-		this.checkAppleCollisionWall = function(x,y){
+			
 			let arrayLayout = this.maze.getMazeLayout();
-			let besarApel = this.apel.getBesarApel();
-
-			let dindingX = Math.floor(x/besarApel);
-			let dindingY = Math.floor(y/besarApel);
+			let dindingX = Math.floor(x/10);
+			let dindingY = Math.floor(y/10);
 			let dindingX2 = Math.floor((x+besarApel)/besarApel);
 			let dindingY2 = Math.floor(y/besarApel);
 			let dindingX3 = Math.floor(x/besarApel);
 			let dindingY3 = Math.floor((y+besarApel)/besarApel);
 			let dindingX4 = Math.floor((x+besarApel)/besarApel);
 			let dindingY4 = Math.floor((y+besarApel)/besarApel);
-
-			let dindingX5 = Math.floor(x/besarApel);
+ 			let dindingX5 = Math.floor(x/besarApel);
 			let dindingY5 = Math.floor((y+besarApel/2)/besarApel);
 			let dindingX6 = Math.floor((x+besarApel)/besarApel);
 			let dindingY6 = Math.floor((y+besarApel/2)/besarApel);
-
-			let dindingX7 = Math.floor((x+besarApel/2)/besarApel);
+ 			let dindingX7 = Math.floor((x+besarApel/2)/besarApel);
 			let dindingY7 = Math.floor(y/besarApel);
 			let dindingX8 = Math.floor((x+besarApel/2)/besarApel);
 			let dindingY8 = Math.floor((y+besarApel)/besarApel);
-
-			if(arrayLayout[dindingY].charAt(dindingX) == '#' || arrayLayout[dindingY2].charAt(dindingX2) == '#' || 
+			
+			for(var i=0;i<this.ular.tubuhSnake.length-1;i++){
+				let posisiXUlar = this.ular.tubuhSnake[i].x;
+				let posisiYUlar = this.ular.tubuhSnake[i].y;
+				
+				if(arrayLayout[dindingY].charAt(dindingX) =='#' || arrayLayout[dindingY2].charAt(dindingX2) == '#' || 
 					arrayLayout[dindingY3].charAt(dindingX3) == '#' || arrayLayout[dindingY4].charAt(dindingX4) == '#' ||
 					arrayLayout[dindingY5].charAt(dindingX5) == '#' || arrayLayout[dindingY6].charAt(dindingX6) == '#' ||
 					arrayLayout[dindingY7].charAt(dindingX7) == '#' || arrayLayout[dindingY8].charAt(dindingX8) == '#'){
-							return false;
+						x = Math.floor(Math.random()*width);
+						y = Math.floor(Math.random()*height);
+						this.moveApple(x,y);
+				}
+				
+				if(posisiXUlar > x && posisiYUlar > y && 
+				posisiXUlar < x+this.apel.besarApel && posisiYUlar < y+this.apel.besarApel){
+					x = Math.floor(Math.random()*width);
+					y = Math.floor(Math.random()*height);
+					this.moveApple(x,y);
+				}
 			}
-			return true;
+			
+			this.drawingObj.drawApple(x,y,besarApel);
 		}
 
 		//method untuk memindahkan apel
@@ -269,9 +255,9 @@
 			
 			kelas.ular.x = parseInt(posisi[0]);
 			kelas.ular.y = parseInt(posisi[1]);
-			kelas.randomApple();
 			kelas.drawingObj.drawSnake(kelas.ular.tubuhSnake,kelas.ular.besarUlar);
 			kelas.drawingObj.drawMaze(kelas.maze.getMazeLayout(),kelas.maze.getBesarDinding());
+			kelas.randomApple();
 		}
 		
 		//cek collision ular dengan apel
