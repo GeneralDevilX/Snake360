@@ -27,16 +27,4 @@ function Snake(besarUlar){
 		this.getTubuhSnake = function(){
 			return this.tubuhSnake;
 		}
-		
-		this.getPanjangTubuh = function(){
-			return this.panjangTubuhSaatIni;
-		}
-		
-		this.getX = function(){
-			return this.x;
-		}
-		
-		this.getY = function(){
-			return this.y;
-		}
 }

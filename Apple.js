@@ -6,10 +6,4 @@ function Apple(besarApel){
 	this.getBesarApel = function(){
 		return this.besarApel;
 	}
-	this.getX = function(){
-		return this.x;
-	}
-	this.getY = function(){
-		return this.y;
-	}
 }
